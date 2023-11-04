@@ -24,20 +24,22 @@ public class Main {
         String regex = "or|-|\\+|\\*|/";
         Scanner scanner = new Scanner(System.in);
         String userInput = scanner.nextLine();
+
+
         String[] userInputArray = userInput.split(regex);
 
-        HashMap<String, Integer> romeNumbersDict = new HashMap<String, Integer>();
+        HashMap<String, Integer> romanNumbersDict = new HashMap<String, Integer>();
 
-        romeNumbersDict.put("I", 1);
-        romeNumbersDict.put("II", 2);
-        romeNumbersDict.put("III", 3);
-        romeNumbersDict.put("IV", 4);
-        romeNumbersDict.put("V", 5);
-        romeNumbersDict.put("VI", 6);
-        romeNumbersDict.put("VII", 7);
-        romeNumbersDict.put("VIII", 8);
-        romeNumbersDict.put("IX", 9);
-        romeNumbersDict.put("X", 10);
+        romanNumbersDict.put("I", 1);
+        romanNumbersDict.put("II", 2);
+        romanNumbersDict.put("III", 3);
+        romanNumbersDict.put("IV", 4);
+        romanNumbersDict.put("V", 5);
+        romanNumbersDict.put("VI", 6);
+        romanNumbersDict.put("VII", 7);
+        romanNumbersDict.put("VIII", 8);
+        romanNumbersDict.put("IX", 9);
+        romanNumbersDict.put("X", 10);
 
 
         int number1 = 0;
@@ -62,22 +64,36 @@ public class Main {
         String number1String = userInputArray[0].trim();
         String number2String = userInputArray[1].trim();
 
-        boolean isFirstNumberArabicFormat = romeNumbersDict.get(number1String) == null;
-        boolean isSecondNumberArabicFormat = romeNumbersDict.get(number2String) == null;
 
-        boolean isBothArabFormat = isFirstNumberArabicFormat && isSecondNumberArabicFormat;
-        boolean isBothRomeFormat = !isFirstNumberArabicFormat && !isSecondNumberArabicFormat;
+        boolean isFirstNumberRomanFormat = RomanNumeralConverter.isRoman(number1String);
+        boolean isSecondNumberRomanFormat = RomanNumeralConverter.isRoman(number2String);
+
+        boolean isBothArabFormat = !isFirstNumberRomanFormat && !isSecondNumberRomanFormat;
+        boolean isBothRomeFormat = isFirstNumberRomanFormat && isSecondNumberRomanFormat;
+
+
+
 
         if (isBothArabFormat) {
             number1 = Integer.parseInt(number1String);
             number2 = Integer.parseInt(number2String);
+            if (number1 < 1 || number1 > 10 || number2 < 1 || number2 > 10){
+                throw new Exception("Задаваемые числа должны лежать в диапазоне [1; 10]");
+            }
 
         } else if (isBothRomeFormat) {
-            number1 = romeNumbersDict.get(number1String);
-            number2 = romeNumbersDict.get(number2String);
+            if (romanNumbersDict.get(number1String) == null || romanNumbersDict.get(number2String) == null){
+                throw new Exception("Задаваемые числа должны лежать в диапазоне [1; 10]");
+            }
+            number1 = romanNumbersDict.get(number1String);
+            number2 = romanNumbersDict.get(number2String);
         } else {
             throw new Exception("Числа должны быть одного формата (Рим/Араб)");
         }
+
+//        if (number1 < 1 || number1 > 10 || number2 < 1 || number2 > 10) {
+//            throw new Exception("Вводимые числа должны лежать в диапазоне [1; 10]");
+//        }
 
         int result = 0;
 

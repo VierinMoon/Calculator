@@ -30,4 +30,13 @@ public class RomanNumeralConverter {
         }
         return romanResult.toString();
     }
+    public static boolean isRoman(String userInput){
+        boolean userWriteRoman = false;
+        for (int i = 0; i < ROMAN_NUMERALS.length; i++) {
+           if (userInput.contains(ROMAN_NUMERALS[i])){
+               userWriteRoman = true;
+           }
+       }
+        return userWriteRoman;
+    }
 }

@@ -97,12 +97,17 @@ public class Main {
                 throw new Exception("Задано неправильное математическое действие");
         }
 
-        Map reversedMap  = new HashMap();
+        Map<Integer, String> reversedMap = new HashMap<>();
+        for(Map.Entry<String, Integer> entry : romeNumbersDict.entrySet()){
+            reversedMap.put(entry.getValue(), entry.getKey());
+        }
 
         if (isBothRomeFormat){
-
+            System.out.println(reversedMap.get(result));
+        } else {
+            System.out.println(result);
         }
-        System.out.println(result);
+
 
     }
 }

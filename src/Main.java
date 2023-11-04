@@ -1,6 +1,7 @@
 import java.util.Scanner;
 import java.util.HashMap;
 import java.util.Map;
+
 // Приветствуем пользователя
 // Пользователь прописывает выражение x + y, где случайное действие
 // Считыватель разделяет строку по пробелам на массив
@@ -43,15 +44,15 @@ public class Main {
         int number2 = 0;
 
         String action;
-        if(userInput.contains("+")){
+        if (userInput.contains("+")) {
             action = "+";
-        }  else if (userInput.contains("-")){
+        } else if (userInput.contains("-")) {
             action = "-";
-        }  else if (userInput.contains("*")){
+        } else if (userInput.contains("*")) {
             action = "*";
-        }  else if (userInput.contains("/")){
+        } else if (userInput.contains("/")) {
             action = "/";
-        }  else {
+        } else {
             throw new Exception("Задано неправильное математическое действие");
         }
         //Проверить какие цифры использует пользователь
@@ -67,7 +68,7 @@ public class Main {
         boolean isBothArabFormat = isFirstNumberArabicFormat && isSecondNumberArabicFormat;
         boolean isBothRomeFormat = !isFirstNumberArabicFormat && !isSecondNumberArabicFormat;
 
-        if(isBothArabFormat) {
+        if (isBothArabFormat) {
             number1 = Integer.parseInt(number1String);
             number2 = Integer.parseInt(number2String);
 
@@ -98,21 +99,14 @@ public class Main {
         }
 
         Map<Integer, String> reversedMap = new HashMap<>();
-        for(Map.Entry<String, Integer> entry : romeNumbersDict.entrySet()){
+        for (Map.Entry<String, Integer> entry : romeNumbersDict.entrySet()) {
             reversedMap.put(entry.getValue(), entry.getKey());
         }
 
-        if (isBothRomeFormat){
-            System.out.println(reversedMap.get(result));
-        } else {
-            System.out.println(result);
-        }
 
-
+        System.out.println(RomanNumeralConverter.toRoman(result));
     }
 }
-
-
 
 // (((((Римские цифры))))
 // Создать массив из Римских цифр до 10 (Аналог regex)

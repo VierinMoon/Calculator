@@ -1,12 +1,26 @@
-//Создаем новый класс для преобразования арабских чисел в римские
-//Создаем массив с осн римскими числами и числами, полученными в результате отрицания (X, IX)
-//Создаем массив со значениями в араб формате
-//Создаем функцию, принимающую на вход арабские числа
-//Функция проверяет условие (1-3999)
-//Внутри функции строим строку из римских чисел
-//Создаем  функцию выводящую на экран результат преобразования
-//
-public class RomanNumeralConverter {
+import java.util.HashMap;
+import java.util.Map;
+
+public class RomanNumeralTools {
+
+
+    public static Map<String, Integer> getRomanNumbersDict(){
+        HashMap<String, Integer> romanNumbersDict = new HashMap<>();
+
+        romanNumbersDict.put("I", 1);
+        romanNumbersDict.put("II", 2);
+        romanNumbersDict.put("III", 3);
+        romanNumbersDict.put("IV", 4);
+        romanNumbersDict.put("V", 5);
+        romanNumbersDict.put("VI", 6);
+        romanNumbersDict.put("VII", 7);
+        romanNumbersDict.put("VIII", 8);
+        romanNumbersDict.put("IX", 9);
+        romanNumbersDict.put("X", 10);
+
+        return romanNumbersDict;
+    }
+
     private static final int[] ARABIC_NUMERALS = {
             1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1
     };
@@ -22,6 +36,7 @@ public class RomanNumeralConverter {
 
         StringBuilder romanResult = new StringBuilder();
 
+        //TODO Опиши
         for (int i = 0; i < ARABIC_NUMERALS.length; i++) {
             while (number >= ARABIC_NUMERALS[i]) {
                 romanResult.append(ROMAN_NUMERALS[i]);
@@ -30,6 +45,8 @@ public class RomanNumeralConverter {
         }
         return romanResult.toString();
     }
+
+
     public static boolean isRoman(String userInput) {
         for (String romanNumeral : ROMAN_NUMERALS) {
            if (userInput.contains(romanNumeral)) {

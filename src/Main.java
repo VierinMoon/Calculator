@@ -36,16 +36,17 @@ public class Main {
         int number1 = 0;
         int number2 = 0;
 
-        String action;
-        if (userInput.contains("+")) {
-            action = "+";
-        } else if (userInput.contains("-")) {
-            action = "-";
-        } else if (userInput.contains("*")) {
-            action = "*";
-        } else if (userInput.contains("/")) {
-            action = "/";
-        } else {
+
+        String[] operators = {"+", "-", "*", "/"};
+        String action = null;
+
+        for (String operator : operators) {
+            if (userInput.contains(operator)) {
+                action = operator;
+                break;
+            }
+        }
+        if (action == null){
             throw new Exception("Задано неправильное математическое действие");
         }
 

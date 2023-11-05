@@ -13,6 +13,12 @@ public class Main {
 
         String[] userInputArray = userInput.split(regex);
 
+        if(userInputArray.length < 2) {
+            throw new Exception("Строка не является математической функцией");
+        } else if (userInputArray.length > 2) {
+            throw new Exception("Формат мат. операции не удовлетворяет заданию - 2 операнда, 1 оператор");
+        }
+
         HashMap<String, Integer> romanNumbersDict = new HashMap<String, Integer>();
 
         romanNumbersDict.put("I", 1);

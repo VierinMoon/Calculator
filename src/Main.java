@@ -7,22 +7,19 @@ import java.util.HashMap;
 public class Main {
     public static void main(String[] args) throws Exception {
         System.out.println("Введите выражение");
-        String regex = "or|-|\\+|\\*|/";
+
         Scanner scanner = new Scanner(System.in);
         String userInput = scanner.nextLine();
 
-
+        String regex = "or|-|\\+|\\*|/";
         String[] userInputArray = userInput.split(regex);
+
 
         if (userInputArray.length < 2) {
             throw new Exception("Строка не является математической функцией");
         } else if (userInputArray.length > 2) {
             throw new Exception("Формат мат. операции не удовлетворяет заданию - 2 операнда, 1 оператор");
         }
-
-
-        int number1 = 0;
-        int number2 = 0;
 
 
         String[] operators = {"+", "-", "*", "/"};
@@ -49,14 +46,17 @@ public class Main {
         boolean isBothArabFormat = !isFirstNumberRomanFormat && !isSecondNumberRomanFormat;
         boolean isBothRomeFormat = isFirstNumberRomanFormat && isSecondNumberRomanFormat;
 
+        int number2 = 0;
+        int number1 = 0;
 
         if (isBothRomeFormat) {
             validationRoman(number1String, number2String);
         }
 
         if (isBothArabFormat) {
-            number1 = Integer.parseInt(number1String);
-            number2 = Integer.parseInt(number2String);
+            Map.Entry<Integer, Integer> pair = converterArab(number1String, number2String);
+            number1 = pair.getKey();
+            number2 = pair.getValue();
 
         } else if (isBothRomeFormat) {
             Map.Entry<Integer, Integer> pair = converterRoman(number1String, number2String);
@@ -100,11 +100,13 @@ public class Main {
 
     }
 
+
     public static void validationArab(Integer number1, Integer number2) throws Exception {
         if (number1 < 1 || number1 > 10 || number2 < 1 || number2 > 10) {
             throw new Exception("Задаваемые числа должны лежать в диапазоне [1; 10]");
         }
     }
+
 
     public static void validationRoman(String number1, String number2) throws Exception {
         Map<String, Integer> romanNumbers = RomanNumeralTools.getRomanNumbersDict();
@@ -114,6 +116,7 @@ public class Main {
         }
     }
 
+
     public static Map.Entry<Integer, Integer> converterRoman(String number1String, String number2String) {
         Map<String, Integer> romanNumbers = RomanNumeralTools.getRomanNumbersDict();
 
@@ -121,5 +124,15 @@ public class Main {
         int number2 = romanNumbers.get(number2String);
         return new AbstractMap.SimpleEntry<>(number1, number2);
     }
+
+
+    public  static Map.Entry<Integer, Integer> converterArab(String number1String, String number2String) {
+        int number1 = Integer.parseInt(number1String);
+        int number2 = Integer.parseInt(number2String);
+        return new AbstractMap.SimpleEntry<>(number1, number2);
+    }
 }
+
+
+
 

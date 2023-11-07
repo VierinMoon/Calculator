@@ -29,6 +29,21 @@ public class RomanNumeralTools {
             "M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"
     };
 
+    /**
+     * <h3>--- Short Description --- </h3>
+     * Стачиваем заданное число наибольшей римской цифрой
+     * <h3>--- Full Description ---</h3>
+     * Используем 2 массива: синтаксис и перевод
+     * С помощью цикла проходимся по 2м массивам одновременно
+     * Вычитаем из целевого числа наибольшую римскую цифру(ее араб аналог) до момента, пока цч не станет меньше
+     * вычитаемого числа;
+     * Далее повторяем со след римской цифрой
+     * На каждое действие вычитания добавляем в конечную строку римскую цифру
+     * @param number Arabic format
+     * @return String: Rome format
+     * @throws Exception range [1; 3999]
+     */
+    
     public static String toRoman(int number) throws Exception {
         if (number > 3999 || number <= 0) {
             throw new Exception("Результат вычисления римских чисел не может превышать 3999 или быть меньше 1");
@@ -36,12 +51,7 @@ public class RomanNumeralTools {
 
         StringBuilder romanResult = new StringBuilder();
 
-        //Используем 2 массива: синтаксис и перевод
-        //С помощью цикла проходимся по 2м массивам одновременно
-        //Вычитаем из целевого числа наибольшую римскую цифру(ее араб аналог) до момента, пока она не станет меньше
-        //вычитаемого числа;
-        //Далее повторяем со след римской цифрой (вычитаем ее переведенный аналог)
-        //На каждое действие вычитания добавляем в конечную строку римскую цифру
+
         for (int i = 0; i < ARABIC_NUMERALS.length; i++) {
             while (number >= ARABIC_NUMERALS[i]) {
                 romanResult.append(ROMAN_NUMERALS[i]);
@@ -61,3 +71,4 @@ public class RomanNumeralTools {
         return false;
     }
 }
+

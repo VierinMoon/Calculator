@@ -1,29 +1,85 @@
-import java.util.AbstractMap;
-import java.util.Map;
-import java.util.Scanner;
-import java.util.HashMap;
+import java.util.*;
 
 
 public class Main {
+    static int number1 = 0;
+    static int number2 = 0;
+
     public static void main(String[] args) throws Exception {
-        System.out.println("Введите выражение");
+        // Принимаем выражение
+        ArrayList<String> userInputArray = getUserInput();
 
-        Scanner scanner = new Scanner(System.in);
-        String userInput = scanner.nextLine();
+        //Определяем математическое выражение
+        String mathAction = getMathAction(userInputArray);
 
-        String regex = "or|-|\\+|\\*|/";
-        String[] userInputArray = userInput.split(regex);
+        //Обрабатываем цифровые значения
+        boolean isBothRomeFormat = populateUserNumbers(userInputArray);
+
+        //Производим расчет
+        int calculationResult = doCalculation(mathAction);
+
+        //Выводим результат
+        outputResult(calculationResult, isBothRomeFormat);
+    }
 
 
-        if (userInputArray.length < 2) {
-            throw new Exception("Строка не является математической функцией");
-        } else if (userInputArray.length > 2) {
-            throw new Exception("Формат мат. операции не удовлетворяет заданию - 2 операнда, 1 оператор");
+    private static void outputResult(int calculationResult, boolean isBothRomeFormat) throws Exception {
+        if (isBothRomeFormat) {
+            System.out.println(RomanNumeralTools.toRoman(calculationResult));
+        } else {
+            System.out.println(calculationResult);
+        }
+    }
+
+
+    private static int doCalculation(String action) throws Exception {
+        return switch (action) {
+            case "+" -> number1 + number2;
+            case "-" -> number1 - number2;
+            case "*" -> number1 * number2;
+            case "/" -> Math.round(number1 / number2);
+            default -> throw new Exception("Задано неправильное математическое действие");
+        };
+    }
+
+
+    private static boolean populateUserNumbers(ArrayList<String> userInputArray) throws Exception {
+        String number1String = userInputArray.get(0).trim();
+        String number2String = userInputArray.get(1).trim();
+
+        boolean isFirstNumberRomanFormat = RomanNumeralTools.isRoman(number1String);
+        boolean isSecondNumberRomanFormat = RomanNumeralTools.isRoman(number2String);
+
+        boolean isBothArabFormat = !isFirstNumberRomanFormat && !isSecondNumberRomanFormat;
+        boolean isBothRomeFormat = isFirstNumberRomanFormat && isSecondNumberRomanFormat;
+
+        if (isBothRomeFormat) {
+            validationRoman(number1String, number2String);
         }
 
+        if (isBothArabFormat) {
+            converterArab(number1String, number2String);
 
+        } else if (isBothRomeFormat) {
+            converterRoman(number1String, number2String);
+
+        } else {
+            throw new Exception("Числа должны быть одного формата (Рим/Араб)");
+        }
+
+        if (isBothArabFormat) {
+            validationArab();
+        }
+        return isBothRomeFormat;
+    }
+
+
+    private static String getMathAction(ArrayList<String> userInputArray) throws Exception {
         String[] operators = {"+", "-", "*", "/"};
         String action = null;
+
+        //Получаем исходную строку
+        String userInput = userInputArray.get(userInputArray.size() - 1);
 
         for (String operator : operators) {
             if (userInput.contains(operator)) {
@@ -35,101 +91,58 @@ public class Main {
             throw new Exception("Задано неправильное математическое действие");
         }
 
-
-        String number1String = userInputArray[0].trim();
-        String number2String = userInputArray[1].trim();
-
-
-        boolean isFirstNumberRomanFormat = RomanNumeralTools.isRoman(number1String);
-        boolean isSecondNumberRomanFormat = RomanNumeralTools.isRoman(number2String);
-
-        boolean isBothArabFormat = !isFirstNumberRomanFormat && !isSecondNumberRomanFormat;
-        boolean isBothRomeFormat = isFirstNumberRomanFormat && isSecondNumberRomanFormat;
-
-        int number2 = 0;
-        int number1 = 0;
-
-        if (isBothRomeFormat) {
-            validationRoman(number1String, number2String);
-        }
-
-        if (isBothArabFormat) {
-            Map.Entry<Integer, Integer> pair = converterArab(number1String, number2String);
-            number1 = pair.getKey();
-            number2 = pair.getValue();
-
-        } else if (isBothRomeFormat) {
-            Map.Entry<Integer, Integer> pair = converterRoman(number1String, number2String);
-            number1 = pair.getKey();
-            number2 = pair.getValue();
-
-
-        } else {
-            throw new Exception("Числа должны быть одного формата (Рим/Араб)");
-        }
-
-        if (isBothArabFormat) {
-            validationArab(number1, number2);
-        }
-
-
-        int result = 0;
-
-        switch (action) {
-            case "+":
-                result = number1 + number2;
-                break;
-            case "-":
-                result = number1 - number2;
-                break;
-            case "*":
-                result = number1 * number2;
-                break;
-            case "/":
-                result = Math.round(number1 / number2);
-                break;
-            default:
-                throw new Exception("Задано неправильное математическое действие");
-        }
-
-        if (isBothRomeFormat) {
-            System.out.println(RomanNumeralTools.toRoman(result));
-        } else {
-            System.out.println(result);
-        }
-
+        return action;
     }
 
 
-    public static void validationArab(Integer number1, Integer number2) throws Exception {
+    private static ArrayList<String> getUserInput() throws Exception {
+        System.out.println("Введите выражение");
+
+        Scanner scanner = new Scanner(System.in);
+        String userInput = scanner.nextLine();
+
+        String regex = "or|-|\\+|\\*|/";
+        ArrayList<String> userInputArray = new ArrayList<>(Arrays.asList(userInput.split(regex)));
+        //Для сохранения исходной строки
+        userInputArray.add(userInput);
+
+        if (userInputArray.size() < 3) {
+            throw new Exception("Строка не является математической функцией");
+        } else if (userInputArray.size() > 3) {
+            throw new Exception("Формат мат. операции не удовлетворяет заданию - 2 операнда, 1 оператор");
+        }
+
+        return userInputArray;
+    }
+
+
+    public static void validationArab() throws Exception {
         if (number1 < 1 || number1 > 10 || number2 < 1 || number2 > 10) {
             throw new Exception("Задаваемые числа должны лежать в диапазоне [1; 10]");
         }
     }
 
 
-    public static void validationRoman(String number1, String number2) throws Exception {
+    public static void validationRoman(String number1String, String number2String) throws Exception {
         Map<String, Integer> romanNumbers = RomanNumeralTools.getRomanNumbersDict();
 
-        if (romanNumbers.get(number1) == null || romanNumbers.get(number2) == null) {
+        if (romanNumbers.get(number1String) == null || romanNumbers.get(number2String) == null) {
             throw new Exception("Задаваемые числа должны лежать в диапазоне [1; 10]");
         }
     }
 
 
-    public static Map.Entry<Integer, Integer> converterRoman(String number1String, String number2String) {
+    public static void converterRoman(String number1String, String number2String) {
         Map<String, Integer> romanNumbers = RomanNumeralTools.getRomanNumbersDict();
 
-        int number1 = romanNumbers.get(number1String);
-        int number2 = romanNumbers.get(number2String);
-        return new AbstractMap.SimpleEntry<>(number1, number2);
+        number1 = romanNumbers.get(number1String);
+        number2 = romanNumbers.get(number2String);
     }
 
 
-    public  static Map.Entry<Integer, Integer> converterArab(String number1String, String number2String) {
-        int number1 = Integer.parseInt(number1String);
-        int number2 = Integer.parseInt(number2String);
-        return new AbstractMap.SimpleEntry<>(number1, number2);
+    public  static void converterArab(String number1String, String number2String) {
+        number1 = Integer.parseInt(number1String);
+        number2 = Integer.parseInt(number2String);
     }
 }
 

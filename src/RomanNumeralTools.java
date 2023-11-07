@@ -4,7 +4,7 @@ import java.util.Map;
 public class RomanNumeralTools {
 
 
-    public static Map<String, Integer> getRomanNumbersDict(){
+    public static HashMap<String, Integer> getRomanNumbersDict(){
         HashMap<String, Integer> romanNumbersDict = new HashMap<>();
 
         romanNumbersDict.put("I", 1);
@@ -43,7 +43,7 @@ public class RomanNumeralTools {
      * @return String: Rome format
      * @throws Exception range [1; 3999]
      */
-    
+
     public static String toRoman(int number) throws Exception {
         if (number > 3999 || number <= 0) {
             throw new Exception("Результат вычисления римских чисел не может превышать 3999 или быть меньше 1");
